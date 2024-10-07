@@ -1,0 +1,35 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Vic Pollution",
+  "width": 800,
+  "height": 400,
+  "projection": {"type": "equalEarth"},
+  "data": {
+    "url": "vic_localities.json",
+    "format": {"type": "topojson", "feature": "vic_localities"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.LOC_NAME",
+      "from": {
+        "data": {
+          "url": "pollutionData.csv"
+        },
+        "key": "location_name",
+        "fields": ["average_value"]
+      }
+    }
+  ],
+  "mark": {"type": "geoshape"},
+  "encoding": {
+    "color": {
+      "field": "average_value",
+      "type": "quantitative",
+      "scale": {"type": "log"}
+    },
+    "tooltip": [
+      {"field": "properties.LOC_NAME", "type": "nominal", "title": "Location Name"},
+      {"field": "average_value", "type": "quantitative", "title": "Pollution Level"}
+    ]
+  }
+}
