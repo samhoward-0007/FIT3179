@@ -1,0 +1,14 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": { "text": "Australian Air Pollution Breakdown" },
+    "width": 600,
+    "height": 600,
+    "data": {
+        "url": "pollute_breakdown.csv"
+    },
+    "mark": "bar",
+    "encoding": {
+        "y": { "field": "Pollute", "type": "nominal" },
+        "x": { "field": "Quantity_in_kg", "type": "quantitative" }
+    }
+}
