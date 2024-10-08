@@ -1,35 +1,36 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Vic Pollution",
+  "title": "Aus Pollution",
   "width": 800,
-  "height": 400,
+  "height": 600,
   "projection": {"type": "equalEarth"},
   "data": {
-    "url": "vic_localities.json",
-    "format": {"type": "topojson", "feature": "vic_localities"}
+    "url": "aus_by_states.json",
+    "format": {"type": "topojson", "feature": "SA1_2016_AUST"}
   },
   "transform": [
     {
-      "lookup": "properties.LOC_NAME",
+      "lookup": "properties.STE_NAME16",
       "from": {
         "data": {
-          "url": "pollutionData.csv"
+          "url": "data_summed_by_state.csv",
+          "format": {"type": "csv"}
         },
-        "key": "location_name",
-        "fields": ["average_value"]
+        "key": "state",
+        "fields": ["quantity_in_kg"]
       }
     }
   ],
   "mark": {"type": "geoshape"},
   "encoding": {
     "color": {
-      "field": "average_value",
+      "field": "quantity_in_kg",
       "type": "quantitative",
       "scale": {"type": "log"}
     },
     "tooltip": [
-      {"field": "properties.LOC_NAME", "type": "nominal", "title": "Location Name"},
-      {"field": "average_value", "type": "quantitative", "title": "Pollution Level"}
+      {"field": "properties.STE_NAME16", "type": "nominal", "title": "State"},
+      {"field": "quantity_in_kg", "type": "quantitative", "title": "Pollution Level"}
     ]
   }
 }
