@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Aus Pollution",
+  "title": "2.5um Particle pollution across Australia",
   "width": 600,
   "height": 600,
   "projection": {"type": "equalEarth"},
