@@ -12,19 +12,30 @@
 
 </head>
 <body>
-<h1 id="main-title">Air Pollution Across Australia</h1>
-<p id="context-paragraph"> This visualization provides an in-depth look at air pollution across Australia, both geographically and 
-  by specific pollutant types. The distribution of pollution across various regions is illustrated to indicate the intensity 
-  of pollutants and the break down of quanitites for individual pollutants, showing which contaminants contribute the most to air 
-  pollution. <br> <br>
 
-  A key pollutant visualized is PM2.5 (Particulate Matter 2.5), which refers to fine inhalable particles with diameters that are 
-  generally 2.5 micrometers or smaller. These particles are particularly harmful because they can penetrate deep into the lungs and 
-  even enter the bloodstream, leading to serious health issues like respiratory diseases and cardiovascular problems. 
+  <h1 id="main-title">Air Pollution Across Australia</h1>
+  <p id="context-paragraph">
+    This visualization provides an in-depth look at air pollution across Australia, both geographically and by specific pollutant types. The distribution of pollution across various regions is illustrated to indicate the intensity of pollutants and the breakdown of quantities for individual pollutants, showing which contaminants contribute the most to air pollution. <br><br>
+    
+    A key pollutant visualized is PM2.5 (Particulate Matter 2.5), which refers to fine inhalable particles with diameters that are generally 2.5 micrometers or smaller. These particles are particularly harmful because they can penetrate deep into the lungs and even enter the bloodstream, leading to serious health issues like respiratory diseases and cardiovascular problems.
+  </p>
 
-</p>
-<div id="choropleth_map"></div>
-<div id="pollute_bar_chart"></div>
+  <!-- Visualization Dashboard Section -->
+  <div id="dashboard">
+    <!-- Choropleth Map Card -->
+    <div class="chart-card">
+      <h2>Pollution by Region</h2>
+      <div id="choropleth_map"></div>
+    </div>
+
+    <!-- Pollutant Bar Chart Card -->
+    <div class="chart-card">
+      <h2>Pollutant Types Breakdown</h2>
+      <div id="pollute_bar_chart"></div>
+    </div>
+  </div>
+
+</body>
 
 <script type="text/javascript">
 
@@ -38,5 +49,77 @@
 
 </script>
 
-</body>
+
+<style>
+  /* Body and Layout Styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+
+  h1#main-title {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2.5em;
+    color: #2c3e50;
+  }
+
+  p#context-paragraph {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1em;
+    color: #7f8c8d;
+    line-height: 1.6;
+    padding: 20px;
+  }
+
+  /* Dashboard Layout */
+  #dashboard {
+    display: flex;
+    flex-direction: column; /* Change to column for vertical stacking */
+    align-items: center;    /* Center the cards horizontally */
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* Card Style for Charts */
+  .chart-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%; /* Set the width for stacked cards */
+    max-width: 800px;
+    box-sizing: border-box;
+  }
+
+  .chart-card h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #34495e;
+  }
+
+  /* Chart Container to Control Graph Size */
+  #choropleth_map, #pollute_bar_chart {
+    width: 100%;
+    height: 400px; /* Set a fixed height for the charts */
+  }
+
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .chart-card {
+      width: 90%;
+    }
+
+    #choropleth_map, #pollute_bar_chart {
+      height: 300px; /* Reduce chart height for smaller screens */
+    }
+  }
+
+</style>
 </html>
