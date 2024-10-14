@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "2.5um Particle pollution across Australia",
+  "title": "Top Pollutes across Australia",
   "width": 600,
   "height": 600,
-  "projection": {"type": "equalEarth"},
+  "projection": {"type": "mercator"},
   "data": {
     "url": "aus_by_states.json",
     "format": {"type": "topojson", "feature": "SA1_2016_AUST"}
@@ -13,24 +13,38 @@
       "lookup": "properties.STE_NAME16",
       "from": {
         "data": {
-          "url": "state_data.csv",
+          "url": "map_data.csv",
           "format": {"type": "csv"}
         },
-        "key": "state",
-        "fields": ["quantity_in_kg"]
-      }
+        "key": "State",
+        "fields": ["Particulate Matter 2-5 um", "Oxides of Nitrogen", "Carbon monoxide"]
+      },
+      "as": ["pm_2_5", "Nitrogen_Oxides", "Carbon_monoxide"]
+    },
+    {
+      "filter": "datum.pm_2_5 > 0 || datum.Nitrogen_Oxides > 0 || datum.Carbon_monoxide > 0"
+    },
+    {
+      "calculate": "datum[selectedPollute]",
+      "as": "pollution_level"
     }
   ],
   "mark": {"type": "geoshape"},
   "encoding": {
     "color": {
-      "field": "quantity_in_kg",
+      "field":  "pollution_level",
       "type": "quantitative",
-      "scale": {"type": "log"}
+      "scale": {"type": "log", "range": ["#ff0000", "#660000"]}
     },
     "tooltip": [
       {"field": "properties.STE_NAME16", "type": "nominal", "title": "State"},
-      {"field": "quantity_in_kg", "type": "quantitative", "title": "Pollution Level"}
+      {"field": "pollution_level", "type": "quantitative", "title": "Pollution Level"}
     ]
-  }
+  },
+  "params": [
+        {
+            "name": "selectedPollute",
+            "value": "Particulate Matter 2-5 um"
+        }
+    ]
 }

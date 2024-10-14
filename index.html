@@ -1,57 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.5.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
-  
-  <!-- CSS file -->
   <link rel="stylesheet" type="text/css" href="styles.css" media="all">
-
-
 </head>
 <body>
-
-  <h1 id="main-title">Air Pollution Across Australia</h1>
+  <h1 id="main-title"><span style="color: #b30000;">Air Pollution</span> Across Australia</h1>
   <p id="context-paragraph">
-    This visualization provides an in-depth look at air pollution across Australia, both geographically and by specific pollutant types. The distribution of pollution across various regions is illustrated to indicate the intensity of pollutants and the breakdown of quantities for individual pollutants, showing which contaminants contribute the most to air pollution. <br><br>
+    This visualization provides an in-depth look at <span style="color: #b30000;">air pollution</span> across Australia, both geographically and by specific <span style="color: #b30000;">pollutant types</span>. The distribution of <span style="color: #b30000;">pollution</span> across various regions is illustrated to indicate the intensity of <span style="color: #b30000;">pollutants</span> and the breakdown of quantities for individual <span style="color: #b30000;">pollutants</span>, showing which <span style="color: #b30000;">contaminants</span> contribute the most to <span style="color: #b30000;">air pollution.</span> <br><br>
     
-    A key pollutant visualized is PM2.5 (Particulate Matter 2.5), which refers to fine inhalable particles with diameters that are generally 2.5 micrometers or smaller. These particles are particularly harmful because they can penetrate deep into the lungs and even enter the bloodstream, leading to serious health issues like respiratory diseases and cardiovascular problems.
+    A key pollutant visualized is <span style="color: #b30000;">PM2.5 (Particulate Matter 2.5)</span>, which refers to fine <span style="color: #b30000;">inhalable particles</span> with diameters that are generally 2.5 micrometers or smaller. These particles are particularly <span style="color: #b30000;">harmful</span> because they can penetrate deep into the lungs and even enter the <span style="color: #b30000;">bloodstream</span>, leading to serious health issues like respiratory diseases and <span style="color: #b30000;">cardiovascular problems</span>. <br><br>
+    
+    All values are in kilograms (kg) and are normalized by the population of the state the value belongs to.
   </p>
-
-  <!-- Visualization Dashboard Section -->
   <div id="dashboard">
-    <!-- Choropleth Map Card -->
     <div class="chart-card">
-      <h2>Pollution by Region</h2>
+      <h2>Key Pollutes by Region</h2>
+      <select id="pollute-selector">
+          <option value="pm_2_5">PM2.5</option>
+          <option value="Nitrogen_Oxides">Nitrogen Oxides</option>
+          <option value="Carbon_monoxide">Carbon Monoxide</option>
+      </select>
       <div id="choropleth_map"></div>
     </div>
-
-    <!-- Pollutant Bar Chart Card -->
     <div class="chart-card">
-      <h2>Pollutant Types Breakdown</h2>
-      <div id="pollute_bar_chart"></div>
+      <h2>Key Pollutant Types Breakdown</h2>
+      <select id="state-selector">
+        <option value="VIC">VIC</option>
+        <option value="NSW">NSW</option>
+        <option value="ACT">ACT</option>
+        <option value="SA">SA</option>
+        <option value="QLD">QLD</option>
+        <option value="NT">NT</option>
+        <option value="WA">WA</option>
+        <option value="TAS">TAS</option>
+    </select>
+    <div id="pollute_bar_chart"></div>
     </div>
   </div>
-
 </body>
-
 <script type="text/javascript">
 
-  var spec1 = "choropleth_map.vg.json";
-  vegaEmbed('#choropleth_map', spec1).then(function(result) {
-  }).catch(console.error);
+var spec1 = "choropleth_map.vg.json";
 
-  var spec2 = "pollute_bar_chart.vg.json";
-  vegaEmbed('#pollute_bar_chart', spec2).then(function(result) {
+function updateMap(pollute) {
+  vegaEmbed('#choropleth_map', spec1).then(function(result) {
+    result.view.signal("selectedPollute", pollute).run();
   }).catch(console.error);
+}
+
+document.getElementById('pollute-selector').addEventListener('change', function() {
+  const selectedPollute = this.value;
+  updateMap(selectedPollute);
+});
+
+updateMap(document.getElementById('pollute-selector').value);
+
+
+
+var spec2 = "pollute_bar_chart.vg.json";
+function updateChart(state) {
+  vegaEmbed('#pollute_bar_chart', spec2).then(function(result) {
+    result.view.signal("selectedState", state).run();
+  }).catch(console.error);
+}
+
+document.getElementById('state-selector').addEventListener('change', function() {
+  const selectedState = this.value;
+  updateChart(selectedState);
+});
+
+updateChart(document.getElementById('state-selector').value);
+
 
 </script>
-
-
 <style>
-  /* Body and Layout Styles */
   body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -59,14 +84,12 @@
     background-color: #f4f4f9;
     color: #333;
   }
-
   h1#main-title {
     text-align: center;
     margin-top: 20px;
     font-size: 2.5em;
     color: #2c3e50;
   }
-
   p#context-paragraph {
     max-width: 900px;
     margin: 0 auto;
@@ -76,50 +99,45 @@
     line-height: 1.6;
     padding: 20px;
   }
-
-  /* Dashboard Layout */
   #dashboard {
     display: flex;
-    flex-direction: column; /* Change to column for vertical stacking */
-    align-items: center;    /* Center the cards horizontally */
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
     padding: 20px;
   }
-
-  /* Card Style for Charts */
   .chart-card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 100%; /* Set the width for stacked cards */
+    width: 100%;
     max-width: 900px;
     box-sizing: border-box;
   }
-
   .chart-card h2 {
     text-align: center;
     font-size: 1.5em;
     margin-bottom: 15px;
     color: #34495e;
   }
-
-  /* Chart Container to Control Graph Size */
   #choropleth_map, #pollute_bar_chart {
     width: 90%;
-    height: 400px; /* Set a fixed height for the charts */
+    height: 400px;
   }
-
-  /* Responsiveness */
   @media (max-width: 768px) {
     .chart-card {
       width: 80%;
     }
-
     #choropleth_map, #pollute_bar_chart {
-      height: 300px; /* Reduce chart height for smaller screens */
+      height: 300px;
     }
   }
 
+/* 
+- more storytelling and another chart 
+- filter bar y axis 
+- context paragraph topogrsphy 
+*/
 </style>
 </html>

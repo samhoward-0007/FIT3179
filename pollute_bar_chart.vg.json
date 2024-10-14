@@ -4,11 +4,32 @@
     "width": 600,
     "height": 600,
     "data": {
-        "url": "pollute_breakdown.csv"
+        "url": "PolluteDataPerState.csv"
     },
-    "mark": "bar",
+    "transform": [
+        {
+            "fold": ["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"],
+            "as": ["State", "Quantity_in_kg"]
+        },
+        {
+            "filter": "datum.State == selectedState"
+        },
+        {
+            "filter": "datum.Quantity_in_kg > 0.01" 
+        }
+    ],
+    "mark": {
+        "type":"bar",
+        "color": "#b30000"
+    },
     "encoding": {
         "y": { "field": "Pollute", "type": "nominal" },
-        "x": { "field": "Quantity_in_kg", "type": "quantitative" }
-    }
+        "x": { "field": "Quantity_in_kg", "type": "quantitative" , "scale": {"type": "log"}}
+    },
+    "params": [
+        {
+            "name": "selectedState",
+            "value": "VIC"
+        }
+    ]
 }
