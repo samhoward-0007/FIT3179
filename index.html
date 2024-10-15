@@ -39,6 +39,14 @@
     </select>
     <div id="pollute_bar_chart"></div>
     </div>
+    <p> This chart demonstrates the breakdown of years lost to <span style="color: #b30000;">diseases</span> attributed to poor air quality <br>
+      It is measured in years based of <span style="color: #b30000;">shortened life expectancy </span> from each disease due to <span style="color: #b30000;"> air pollution.</span>
+    </p>
+    <div class="chart-card">
+      <h2>Years Lost to Diseases</h2>
+      <div id="tree_map"></div>
+      <h4>Total Years Lost: 29014</h4>
+    </div>
   </div>
 </body>
 <script type="text/javascript">
@@ -74,6 +82,10 @@ document.getElementById('state-selector').addEventListener('change', function() 
 
 updateChart(document.getElementById('state-selector').value);
 
+var spec3 = "tree_map.vg.json";
+vegaEmbed('#tree_map', spec3).then(function(result) {
+    result.view.signal().run();
+}).catch(console.error);
 
 </script>
 <style>
@@ -134,10 +146,9 @@ updateChart(document.getElementById('state-selector').value);
     }
   }
 
-/* 
-- more storytelling and another chart 
-- filter bar y axis 
-- context paragraph topogrsphy 
+/* Data Sources: 
+https://www.npi.gov.au/npidata/action/load/download-result;jsessionid=1327D8460B42E9041FF454AA95E100F3/criteria/destination/ALL/substance/92/source-type/ALL/subthreshold-data/Yes/substance-name/Particulate%2BMatter%2B2.5%2Bum/year/2023 
+https://data.gov.au/data/dataset/2021-air-quality-years-of-life-lost-attributed-to-poor-air-quality-in-australia 
 */
 </style>
 </html>

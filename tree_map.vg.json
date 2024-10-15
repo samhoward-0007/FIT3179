@@ -1,0 +1,40 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "",
+    "width": 400,
+    "height": 400,
+    "data": {
+      "url": "disease_data.csv"
+    },
+    "transform": [
+      {
+        "window": [{"op": "sum", "field": "Years", "as": "TotalYears"}],
+        "frame": [null, null]
+      },
+      {
+        "calculate": "datum.Years / datum.TotalYears * 100",
+        "as": "Percentage"
+      }
+    ],
+    "mark": {
+      "type": "arc",
+      "innerRadius": 50
+    },
+    "encoding": {
+      "theta": {
+        "field": "Years",
+        "type": "quantitative",
+        "stack": true
+      },
+      "color": {
+        "field": "Disease",
+        "type": "nominal",
+        "legend": {"title": "Disease"}
+      },
+      "tooltip": [
+        {"field": "Disease", "type": "nominal"},
+        {"field": "Years", "type": "quantitative"},
+        {"field": "Percentage", "type": "quantitative", "format": ".2f"}
+      ]
+    }
+  }
